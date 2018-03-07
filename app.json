@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/welcome/welcome",
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/wxpay/wxpay"
   ],
   "window": {
     "backgroundTextStyle": "light",
