@@ -6,6 +6,7 @@ App({
   globalData: {
     appid: "wx09e56891c8a3ff17",
     paySuccessUrl: "",
-    openid:""
+    openid:"",
+    out_trade_no: 1
   }
 })

@@ -5,7 +5,9 @@ var wxRequest = require('../../utils/wxRequest')
 import config from '../../utils/config'
 //获取应用实例
 const app = getApp();
-const url = 'http://localhost:8080';
+// const url = 'http://localhost:8080';
+const url = 'http://localhost:8080/#/home';
+// const url = `${config.url}/#/home`;
 
 Page({
   data: {
@@ -22,7 +24,7 @@ Page({
     var wxLogin = wxApi.wxLogin()
     wxLogin().then(res => {
       console.log('1.登陆成功')
-      var url = config.getOpenidUrl;
+      var url1 = config.getOpenidUrl;
       var params = {
         appid: "wx09e56891c8a3ff17",
         secret: "f752b99103713585f041e5eb8c783339",
@@ -30,7 +32,7 @@ Page({
         grant_type: "authorization_code"
       }
       //2.获取openid
-      return wxRequest.getRequest(url, params)
+      return wxRequest.getRequest(url1, params)
     }).
       then(res => {
         console.log('2.openid获取成功')
@@ -58,10 +60,10 @@ Page({
       then(res => {
         console.log('4.成功了')
         console.log(res)
-        var url = app.globalData.ip + config.searchDgUrl
+        var url2 = app.globalData.ip + config.searchDgUrl
         var data = util.json2Form({ phoneNumber: '18696835639' })
         //5.获取绑定手机号码
-        return wxRequest.postRequest(url, data)
+        return wxRequest.postRequest(url2, data)
       }).
       then(res => {
         console.log('5.成功了')
@@ -84,7 +86,7 @@ Page({
 
       console.log(url);
       this.setData({
-        webViewSrc: 'http://localhost:8080/#/pay?'
+        webViewSrc: `${url}/#/pay?`
       })
     }
   },
@@ -92,16 +94,17 @@ Page({
   setWebViewUrl: function (userInfo){
     this.data.userInfo = userInfo;
     let StringUserInfo = JSON.stringify(userInfo);
-    let webViewUrl = `${url}?userInfo=${StringUserInfo}&openid=${this.data.openid}`;
+    let webViewUrl = `${url}?nickName=${userInfo.nickName}&gender=${userInfo.gender}&avatarUrl=${userInfo.avatarUrl}&openid=${this.data.openid}`;
    
     this.data.webViewSrc = webViewUrl;
+
+    console.log(webViewUrl);
     this.setData({
-      // webViewSrc: webViewUrl
-      webViewSrc: url
+      webViewSrc: webViewUrl
+      // webViewSrc: url
     })
     setTimeout(function () {
       wx.hideToast()
-    }, 500)
-    console.log(webViewUrl);
+    }, 1500)
   }
 })

@@ -1,2 +1,2 @@
 <!--pages/wxpay/wxpay.wxml-->
-<text>支付中</text>
+<text class='paying'>支付中</text>
