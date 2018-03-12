@@ -7,13 +7,16 @@ import config from '../../utils/config'
 const app = getApp();
 // const url = 'http://localhost:8080';
 // const url = 'http://localhost:8080';
-const url = `${config.url}/#/home`;
+const url = `${config.url}`;
 
 Page({
   data: {
     webViewSrc: "",
     userInfo: {},
     openid: "",
+    nickName: "",
+    avatarUrl: "",
+    gender: "",
     show: false
   },
   onLoad: function () {
@@ -51,6 +54,9 @@ Page({
         console.log(res.userInfo)
        
         if(res.userInfo){
+          this.data.nickName = res.userInfo.nickName;
+          this.data.avatarUrl = res.userInfo.avatarUrl;
+          this.data.gender = res.userInfo.gender,
           this.setWebViewUrl(res.userInfo);
         };
         //4.获取系统信息
@@ -78,14 +84,17 @@ Page({
   //设置用户信息
   setWebViewUrl: function (userInfo){
     this.data.userInfo = userInfo;
-    let StringUserInfo = JSON.stringify(userInfo);
-    console.log(StringUserInfo);
     console.log("--------------------------------------------------------------------->");
-    let webViewUrl = url + `?nickName=${userInfo.nickName}&gender=${userInfo.gender}&avatarUrl="${userInfo.avatarUrl}"`;
+    let webViewUrl = `${url}?nickName=${userInfo.nickName}&gender=${userInfo.gender}&avatarUrl=${userInfo.avatarUrl}&openid=${this.data.openid}`;
+    
 
     console.log(webViewUrl);
     this.setData({
-      webViewSrc: url,
+      openid: this.data.openid,
+      nickName: this.data.nickName,
+      avatarUrl: this.data.avatarUrl,
+      gender: this.data.gender,
+      webViewSrc: webViewUrl,
       show: true
     })
     setTimeout(function () {

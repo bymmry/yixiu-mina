@@ -2,8 +2,8 @@
 <view>
   <view class='container'>
     <text class='loading'>loading...</text>
-    <view wx-if="{{show}}">
-      <web-view src="{{webViewSrc}}"></web-view>   
-    </view> 
+     <view wx-if="{{show}}"> 
+      <web-view src="https://m.yixiutech.com?openid={{openid}}"></web-view>   
+     </view>  
   </view>
 </view>
