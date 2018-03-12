@@ -6,14 +6,15 @@ import config from '../../utils/config'
 //获取应用实例
 const app = getApp();
 // const url = 'http://localhost:8080';
-const url = 'http://localhost:8080/#/home';
-// const url = `${config.url}/#/home`;
+// const url = 'http://localhost:8080';
+const url = `${config.url}`;
 
 Page({
   data: {
     webViewSrc: "",
     userInfo: {},
-    openid: ""
+    openid: "",
+    show: false
   },
   onLoad: function () {
     let that = this;
@@ -23,7 +24,7 @@ Page({
     })
     var wxLogin = wxApi.wxLogin()
     wxLogin().then(res => {
-      console.log('1.登陆成功')
+      console.log('1.登陆成功');
       var url1 = config.getOpenidUrl;
       var params = {
         appid: "wx09e56891c8a3ff17",
@@ -35,42 +36,26 @@ Page({
       return wxRequest.getRequest(url1, params)
     }).
       then(res => {
-        console.log('2.openid获取成功')
-        console.log(res.data.data.openid)
-        let openid = res.data.data.openid;
-        if(openid){
+        if(res.data.code == 200){
+          console.log('2.openid获取成功');
+          let openid = res.data.data.openid;
           app.globalData.openid = openid;
           that.data.openid = openid;
+          //3.获取用户信息
+          var wxGetUserInfo = wxApi.wxGetUserInfo();
+          return wxGetUserInfo();
         }
-        //3.获取用户信息
-        var wxGetUserInfo = wxApi.wxGetUserInfo()
-        return wxGetUserInfo()
-        
       }).
       then(res => {
         console.log('3.用户信息成功')
         console.log(res.userInfo)
+       
         if(res.userInfo){
-          that.setWebViewUrl(res.userInfo);
+          this.setWebViewUrl(res.userInfo);
         };
         //4.获取系统信息
         var wxGetSystemInfo = wxApi.wxGetSystemInfo();
         return wxGetSystemInfo()
-      }).
-      then(res => {
-        console.log('4.成功了')
-        console.log(res)
-        var url2 = app.globalData.ip + config.searchDgUrl
-        var data = util.json2Form({ phoneNumber: '18696835639' })
-        //5.获取绑定手机号码
-        return wxRequest.postRequest(url2, data)
-      }).
-      then(res => {
-        console.log('5.成功了')
-        console.log(res.userInfo)
-        that.setData({
-          userInfo: res.userInfo
-        })
       })
       .finally(function (res) {
         console.log('finally~')
@@ -86,7 +71,7 @@ Page({
 
       console.log(url);
       this.setData({
-        webViewSrc: `${url}/#/pay?`
+        webViewSrc: `${url}/#/pay`
       })
     }
   },
@@ -94,14 +79,14 @@ Page({
   setWebViewUrl: function (userInfo){
     this.data.userInfo = userInfo;
     let StringUserInfo = JSON.stringify(userInfo);
-    let webViewUrl = `${url}?nickName=${userInfo.nickName}&gender=${userInfo.gender}&avatarUrl=${userInfo.avatarUrl}&openid=${this.data.openid}`;
-   
-    this.data.webViewSrc = webViewUrl;
+    console.log(StringUserInfo);
+    console.log("--------------------------------------------------------------------->");
+    let webViewUrl = url + `?nickName=${userInfo.nickName}&gender=${userInfo.gender}&avatarUrl="${userInfo.avatarUrl}"`;
 
     console.log(webViewUrl);
     this.setData({
-      webViewSrc: webViewUrl
-      // webViewSrc: url
+      webViewSrc: url,
+      show: true
     })
     setTimeout(function () {
       wx.hideToast()

@@ -21,8 +21,8 @@ Page({
     wx.request({
       url: `${config.url}/wx/order/sign`,
       data: {
-        // total_fee: payInfo.payment,
-        total_fee: 1,
+        total_fee: payInfo.payment,
+        // total_fee: 1,
         openid: app.globalData.openid
       },
       method: "POST",
