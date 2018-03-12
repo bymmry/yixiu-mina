@@ -7,7 +7,7 @@ import config from '../../utils/config'
 const app = getApp();
 // const url = 'http://localhost:8080';
 // const url = 'http://localhost:8080';
-const url = `${config.url}`;
+const url = `${config.url}/#/home`;
 
 Page({
   data: {
